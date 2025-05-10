@@ -1404,7 +1404,7 @@ function updateTrendChart(transactions) {
             }
         },
         plugins: [{
-            afterEvent: function(chart) {
+            afterDraw: function(chart) {
                 updateTrendChartTitle(chart);
             }
         }]
