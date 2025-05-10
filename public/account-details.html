@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Details - Finance Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-brand">Finance Tracker</div>
+        <a href="index.html" class="back-button">← Back to Dashboard</a>
+    </nav>
+
+    <main>
+        <div class="account-details-container">
+            <div class="account-header">
+                <h1 id="account-name"></h1>
+                <div class="account-balance">
+                    <h2>Total Balance</h2>
+                    <p id="account-balance"></p>
+                    <button id="edit-balance-btn" class="btn btn-secondary">Edit Balance</button>
+                </div>
+                <div id="parent-account-info" class="parent-account-info" style="display: none;">
+                    <h2>Parent Account Balance</h2>
+                    <p id="parent-account-balance"></p>
+                </div>
+            </div>
+
+            <div class="account-content">
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <h3>Category Distribution</h3>
+                        <canvas id="categoryDistributionChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Sub-accounts section (only shown for savings accounts) -->
+                <div id="subaccounts-section" style="display: none;">
+                    <div class="subaccounts-header">
+                        <div>
+                            <h3>Sub-Accounts</h3>
+                            <p class="parent-balance-info">Parent Account: <span id="available-balance"></span></p>
+                        </div>
+                        <button id="add-subaccount-btn" class="btn">Add Sub-Account</button>
+                    </div>
+                    <div id="subaccounts-grid" class="subaccounts-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Balance Form -->
+        <div id="edit-balance-form-container" class="form-container" style="display: none;">
+            <form id="edit-balance-form">
+                <h3>Edit Account Balance</h3>
+                <div class="form-group">
+                    <label for="new-balance">New Balance</label>
+                    <input type="number" id="new-balance" name="new-balance" step="0.01" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">Update Balance</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideEditBalanceForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sub-account Form -->
+        <div id="subaccount-form-container" class="form-container" style="display: none;">
+            <form id="subaccount-form">
+                <h3>Add Sub-Account</h3>
+                <input type="hidden" id="parent-account" name="parent-account">
+                <div class="form-group">
+                    <label for="subaccount-name">Sub-Account Name</label>
+                    <input type="text" id="subaccount-name" name="subaccount-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="subaccount-balance">Initial Balance</label>
+                    <input type="number" id="subaccount-balance" name="subaccount-balance" step="0.01" min="0" required>
+                    <small id="balance-limit-message" class="form-text"></small>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">Add Sub-Account</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideSubaccountForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Edit Sub-account Balance Form -->
+        <div id="edit-subaccount-form-container" class="form-container" style="display: none;">
+            <form id="edit-subaccount-form">
+                <h3>Edit Sub-Account Balance</h3>
+                <input type="hidden" id="edit-subaccount-name">
+                <div class="form-group">
+                    <label for="edit-subaccount-balance">New Balance</label>
+                    <input type="number" id="edit-subaccount-balance" name="edit-subaccount-balance" step="0.01" min="0" required>
+                    <small id="edit-balance-limit-message" class="form-text"></small>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">Update Balance</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideEditSubaccountForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="account-details.js"></script>
+</body>
+</html> 

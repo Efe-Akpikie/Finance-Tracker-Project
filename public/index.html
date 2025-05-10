@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <h1>Finance Tracker</h1>
+            <ul>
+                <li><a href="#" class="active" data-page="dashboard">Dashboard</a></li>
+                <li><a href="#" data-page="accounts">Accounts</a></li>
+                <li><a href="#" data-page="transactions">Transactions</a></li>
+                <li><a href="#" data-page="budgets">Budgets</a></li>
+                <li><a href="#" data-page="add-transaction">Add Transaction</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="active">
+            <div class="summary-cards">
+                <div class="card">
+                    <h3>Total Balance</h3>
+                    <p id="total-balance">$0.00</p>
+                </div>
+                <div class="card">
+                    <h3 id="total-income-label">Total Income</h3>
+                    <p id="total-income">$0.00</p>
+                </div>
+                <div class="card">
+                    <h3 id="total-expenses-label">Total Expenses</h3>
+                    <p id="total-expenses">$0.00</p>
+                </div>
+            </div>
+
+            <div class="analysis-selector">
+                <select id="analysis-type" onchange="updateDashboardView()">
+                    <option value="expense">Expense Overview</option>
+                    <option value="trends">Spending Trends</option>
+                </select>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-wrapper" id="expense-overview" style="display: none;">
+                    <h3>Expenses by Category</h3>
+                    <canvas id="expenseChart"></canvas>
+                </div>
+                <div class="chart-wrapper" id="spending-trends" style="display: none;">
+                    <div class="trend-date-filters" style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem;">
+                        <label for="trend-start-date">Start Date:</label>
+                        <input type="date" id="trend-start-date">
+                        <label for="trend-end-date">End Date:</label>
+                        <input type="date" id="trend-end-date">
+                    </div>
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Accounts Section -->
+        <section id="accounts">
+            <div class="accounts-header">
+                <h2>Account Overview</h2>
+                <button id="clear-balances-btn" class="clear-balances-btn">Clear Account Balances</button>
+            </div>
+
+            <div class="accounts-container">
+                <div class="main-accounts">
+                    <h3>Main Accounts</h3>
+                    <div class="account-bars" id="account-bars">
+                        <!-- Account bars will be populated here -->
+                    </div>
+                    <div class="account-distribution">
+                        <h3>Account Distribution</h3>
+                        <canvas id="accountDistributionChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="account-details" id="account-details" style="display: none;">
+                    <div class="account-details-header">
+                        <h3 id="selected-account-name">Account Name</h3>
+                        <button onclick="closeAccountDetails()">Close</button>
+                    </div>
+                    <div class="account-balance-summary">
+                        <div class="balance-card">
+                            <h4>Total Balance</h4>
+                            <p id="selected-account-balance">$0.00</p>
+                        </div>
+                        <div class="balance-card">
+                            <h4>Available Balance</h4>
+                            <p id="selected-account-available">$0.00</p>
+                        </div>
+                    </div>
+                    <div class="account-analysis">
+                        <canvas id="accountAnalysisChart"></canvas>
+                    </div>
+                    <div class="category-distribution">
+                        <h4>Category Distribution</h4>
+                        <canvas id="categoryDistributionChart"></canvas>
+                    </div>
+                    <div class="subaccounts-section" id="selected-account-subaccounts">
+                        <div class="subaccounts-header">
+                            <h4>Sub-Accounts</h4>
+                            <button id="add-subaccount-btn" onclick="showSubaccountForm()" style="display: none;">Add Sub-Account</button>
+                        </div>
+                        <div class="subaccounts-grid" id="selected-subaccounts-grid">
+                            <!-- Sub-accounts will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subaccount-form-container" id="subaccount-form-container" style="display: none;">
+                <form id="subaccount-form">
+                    <div class="form-group">
+                        <label for="subaccount-name">Sub-Account Name</label>
+                        <input type="text" id="subaccount-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="parent-account">Parent Account</label>
+                        <select id="parent-account" required>
+                            <option value="savings">Savings</option>
+                        </select>
+                    </div>
+                    <button type="submit">Create Sub-Account</button>
+                    <button type="button" onclick="hideSubaccountForm()">Cancel</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Transactions Section -->
+        <section id="transactions">
+            <div class="transactions-header">
+                <h2>Transaction History</h2>
+                <div class="filters">
+                    <select id="type-filter">
+                        <option value="all">All Types</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                        <option value="transfer">Transfer</option>
+                    </select>
+                    <select id="category-filter">
+                        <option value="all">All Categories</option>
+                    </select>
+                    <input type="date" id="date-filter">
+                </div>
+            </div>
+            <div class="transactions-list" id="transactions-list">
+                <!-- Transactions will be populated here -->
+            </div>
+        </section>
+
+        <!-- Budgets Section -->
+        <section id="budgets">
+            <div class="budgets-header">
+                <h2>Budget Management</h2>
+                <button id="add-budget-btn">Add New Budget</button>
+            </div>
+
+            <div class="budget-form-container" id="budget-form-container" style="display: none;">
+                <form id="budget-form">
+                    <div class="form-group">
+                        <label for="budget-category">Category</label>
+                        <select id="budget-category" required>
+                            <option value="food">Food</option>
+                            <option value="rent">Rent</option>
+                            <option value="utilities">Utilities</option>
+                            <option value="transportation">Transportation</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget-amount">Budget Amount</label>
+                        <input type="number" id="budget-amount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget-period">Period</label>
+                        <select id="budget-period" required>
+                            <option value="monthly">Monthly</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget-start-date">Start Date</label>
+                        <input type="date" id="budget-start-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget-end-date">End Date</label>
+                        <input type="date" id="budget-end-date" required>
+                    </div>
+                    <button type="submit">Save Budget</button>
+                    <button type="button" onclick="hideBudgetForm()">Cancel</button>
+                </form>
+            </div>
+
+            <div class="budgets-list" id="budgets-list">
+                <!-- Budgets will be populated here -->
+            </div>
+        </section>
+
+        <!-- Add Transaction Section -->
+        <section id="add-transaction">
+            <h2>Add New Transaction</h2>
+            <form id="transaction-form">
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="type">Type</label>
+                    <select id="type" required onchange="handleTransactionTypeChange()">
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                        <option value="transfer">Transfer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="account">Account</label>
+                    <select id="account" required onchange="handleAccountChange()">
+                        <!-- Will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group" id="to-account-group" style="display: none;">
+                    <label for="to-account">To Account</label>
+                    <select id="to-account">
+                        <!-- Will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group" id="category-group">
+                    <label for="category">Category</label>
+                    <select id="category" required>
+                        <option value="food">Food</option>
+                        <option value="rent">Rent</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="transportation">Transportation</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="note">Note (Optional)</label>
+                    <textarea id="note"></textarea>
+                </div>
+                <button type="submit">Add Transaction</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+    <script src="generateTestData.js"></script>
+</body>
+</html> 
