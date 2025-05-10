@@ -80,6 +80,25 @@ npm run dev
   - Express.js
   - SQLite3
 
+## Upcoming Features/Plans
+- Goal-Based Financial Planning Assistant (Deadline: May 17th 2025)
+   - Users set savings goals with target amount and deadline (e.g., “Save $1,000 in 3 months”)
+   - Assistant calculates required weekly savings based on current habits
+   - Displays real-time progress tracker toward the goal
+   - Suggests spending limits to stay on track
+   - Sends alerts if the user is falling behind
+   - Transforms passive tracking into active financial planning
+- I will turn this project into a financial simulator rather than tracker. You'll be able to simulate account transactions and trade stocks. Hopefully similar to game of life or cashflow but solely for finance (Deadline: 3-4 years from noq)
+   - New and advanced Account system(August 2025):
+      - Credit: Interest
+      - Debit:
+      - Savings: Interest 
+   - Banking system (TBD)
+      - Loans
+      - Credit/Financial Health score
+   - Simulated Trading (TBD)
+   - High Frequency Trading simulator (TBD)
+
 ## License
 
 MIT License 
