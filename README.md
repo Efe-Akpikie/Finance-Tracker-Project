@@ -12,30 +12,8 @@ A web-based finance tracking application that stores data locally on your device
 - Responsive design for desktop and mobile
 - Local data storage using SQLite
 
-## Prerequisites
-
-- Node.js (v14 or higher)
-- npm (Node Package Manager)
-
-## Installation
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd finance-tracker
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Start the application:
-```bash
-npm start
-```
-
-The application will be available at `http://localhost:3000`
+## Link
+- The application will be available at `http://localhost:3000`"Update with actual link"
 
 ## Usage
 
